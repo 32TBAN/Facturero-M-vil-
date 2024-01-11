@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/menu_facturas"
+            android:title="Facturas"/>
+        <item
+            android:id="@+id/menu_clientes"
+            android:title="Clientes"/>
+        <item
+            android:id="@+id/menu_usuarios"
+            android:title="Usuarios"/>
+        <item
+            android:id="@+id/menu_productos"
+            android:title="Productos"/>
+    </group>
+</menu>
