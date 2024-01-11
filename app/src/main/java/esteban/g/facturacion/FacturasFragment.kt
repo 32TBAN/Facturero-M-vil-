@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,6 +28,8 @@ class FacturasFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val buttonAddBill = view.findViewById<Button>(R.id.btnAgregarFactura)
+
         lifecycleScope.launch {
             val listBills: List<Bill>? = BillLogic.listaFacturas();
 
@@ -36,6 +39,10 @@ class FacturasFragment : Fragment() {
                 recyclerView.adapter = billAdapter
                 recyclerView.layoutManager = LinearLayoutManager(requireContext())
             }
+        }
+
+        buttonAddBill.setOnClickListener{
+
         }
     }
 

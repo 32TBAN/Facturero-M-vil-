@@ -13,9 +13,8 @@ class BillAdapter(private val bills: List<Bill>) : RecyclerView.Adapter<BillAdap
     class BillViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textViewFactura: TextView = itemView.findViewById(R.id.textViewIdOrden)
         val textViewFecha: TextView = itemView.findViewById(R.id.textViewFecha)
-        val buttonDelete: Button = itemView.findViewById(R.id.buttonDelete)
+        val buttonDelete: Button = itemView.findViewById(R.id.buttonDelete) //TODO: Hacer los metodos
         val btnShow: TextView = itemView.findViewById(R.id.buttonShow)
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BillViewHolder {
@@ -27,7 +26,7 @@ class BillAdapter(private val bills: List<Bill>) : RecyclerView.Adapter<BillAdap
     override fun onBindViewHolder(holder: BillViewHolder, position: Int) {
         val currentBill = bills[position]
         holder.textViewFactura.text = currentBill.id.toString()
-        holder.textViewFecha.text = currentBill.date.toString()
+        holder.textViewFecha.text = currentBill.date
     }
 
     override fun getItemCount() = bills.size
