@@ -1,10 +1,13 @@
 package esteban.g.facturacion
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import esteban.g.facturacion.Entidades.User
 import esteban.g.facturacion.Logic.UserLogic
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,8 +34,10 @@ class MainActivity : AppCompatActivity() {
 
             if (username.isNotEmpty() && password.isNotEmpty()) {
                 lifecycleScope.launch {
-                    if (isValid(username, password)) {
-                        performLogin(username, password)
+                    val user =  UserLogic.getUserByUsernameAndPassword(username, password)
+                    if (user != null) {
+                        Toast.makeText(this@MainActivity,"Correcto Ingresando",Toast.LENGTH_SHORT).show()
+                        performLogin(user)
                     } else {
                         showError()
                     }
@@ -43,18 +48,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private suspend fun isValid(username: String, password: String): Boolean {
-        val user = UserLogic.getUserByUsernameAndPassword(username, password)
-        println(user)
-        return user != null
-    }
-
-    private fun performLogin(username: String, password: String) {
-
+    private fun performLogin(user: User) {
+        val intent = Intent(this, salesScreem::class.java).apply {
+            putExtra("userId", user.id)
+            putExtra("userJob", user.job)
+        }
+        startActivity(intent)
     }
 
     private fun showError() {
-        println("Error al iniciar seccion")
+        Toast.makeText(this@MainActivity,"Error en las credenciales",Toast.LENGTH_SHORT).show()
     }
 
 

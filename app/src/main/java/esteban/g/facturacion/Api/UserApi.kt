@@ -25,7 +25,6 @@ object UserApi {
                 val userWrapper = response.body()
 
                 val user = userWrapper?.usuarios?.firstOrNull {
-                    println("Comparando: ${it.email} con $username y ${it.password} con $password")
                     it.email.equals(username, ignoreCase = true) && it.password.equals(password, ignoreCase = true)
                 }
                 return  user
