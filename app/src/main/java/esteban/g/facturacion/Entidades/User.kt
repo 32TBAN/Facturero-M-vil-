@@ -3,13 +3,12 @@ package esteban.g.facturacion.Entidades
 import com.google.gson.annotations.SerializedName
 
 data class User (
-        @SerializedName("id")
+        @SerializedName("iD_Usuario")
         val id: Int,
-        @SerializedName("cédula")
-        val cedula: String,
-        val nombre: String,
-        @SerializedName("dirección")
-        val direccion: String,
-        @SerializedName("teléfono")
-        val telefono: String,
+        @SerializedName("email")
+        val email: String,
+        @SerializedName("password")
+        val password: String,
+        @SerializedName("cargo")
+        val job: String
 )
