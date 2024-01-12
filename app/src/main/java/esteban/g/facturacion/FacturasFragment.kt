@@ -1,5 +1,5 @@
 package esteban.g.facturacion
-
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,10 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import esteban.g.facturacion.Entidades.Bill
 import esteban.g.facturacion.Logic.BillLogic
-import esteban.g.facturacion.Logic.UserLogic
 import kotlinx.coroutines.launch
-import java.util.Objects
-import esteban.g.facturacion.Entidades.User as User
 
 class FacturasFragment : Fragment() {
 
@@ -30,6 +27,11 @@ class FacturasFragment : Fragment() {
 
         val buttonAddBill = view.findViewById<Button>(R.id.btnAgregarFactura)
 
+        buttonAddBill.setOnClickListener{
+            val intent = Intent(requireContext(), SaleDescription::class.java)
+            startActivity(intent)
+        }
+
         lifecycleScope.launch {
             val listBills: List<Bill>? = BillLogic.listaFacturas();
 
@@ -41,9 +43,7 @@ class FacturasFragment : Fragment() {
             }
         }
 
-        buttonAddBill.setOnClickListener{
 
-        }
     }
 
 

@@ -1,0 +1,70 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <EditText
+        android:id="@+id/editTextBuscarCliente"
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:hint="Buscar Cliente"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textIdCustomer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="11dp"
+            android:text="Id"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/textIdentification"
+            android:layout_width="0dp"
+            android:textSize="11dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Cédula"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/textName"
+            android:layout_width="0dp"
+            android:textSize="11dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Nombre"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/textLastname"
+            android:layout_width="0dp"
+            android:textSize="11dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Apellido"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/textAdrressCustomer"
+            android:layout_width="0dp"
+            android:textSize="11dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Dirección"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewClientes"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

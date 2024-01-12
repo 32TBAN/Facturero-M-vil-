@@ -16,6 +16,9 @@
         android:theme="@style/Theme.Facturacion"
         tools:targetApi="31">
         <activity
+            android:name=".SaleDescription"
+            android:exported="false" />
+        <activity
             android:name=".salesScreem"
             android:exported="false" />
         <activity
