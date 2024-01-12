@@ -12,13 +12,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import esteban.g.facturacion.Adapters.ClienteAdapter
 import esteban.g.facturacion.Adapters.ProductAdapter
+import esteban.g.facturacion.Adapters.ProductAdapterAdd
 import esteban.g.facturacion.Entidades.Customer
 import esteban.g.facturacion.Entidades.Product
 import esteban.g.facturacion.Logic.CustomerLogic
 import esteban.g.facturacion.Logic.ProductLogic
 import kotlinx.coroutines.launch
 
-class SaleDescription : AppCompatActivity(), ClienteAdapter.OnClienteSelectedListener, ProductAdapter.OnProductSelectedListener {
+class SaleDescription : AppCompatActivity(), ClienteAdapter.OnClienteSelectedListener, ProductAdapter.OnProductSelectedListener,
+ProductAdapterAdd.OnProductSelectedListener{
     private lateinit var customerAdapter: ClienteAdapter
     private var editCedula: TextView? = null
     private var editNombre: TextView? = null
@@ -27,7 +29,7 @@ class SaleDescription : AppCompatActivity(), ClienteAdapter.OnClienteSelectedLis
     private var selectedProducts: MutableList<Product> = mutableListOf()
 
     private lateinit var productAdapter: ProductAdapter
-
+    private lateinit var productAdapterAdd: ProductAdapterAdd
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.sale_description)
@@ -83,10 +85,9 @@ class SaleDescription : AppCompatActivity(), ClienteAdapter.OnClienteSelectedLis
         }
 
         val recyclerViewProductsAdd: RecyclerView = findViewById(R.id.recyclerViewProductsAdd)
-        productAdapter = ProductAdapter(selectedProducts, this@SaleDescription)
-        recyclerViewProductsAdd.adapter = productAdapter
+        productAdapterAdd = ProductAdapterAdd(selectedProducts, this@SaleDescription)
+        recyclerViewProductsAdd.adapter = productAdapterAdd
         recyclerViewProductsAdd.layoutManager = LinearLayoutManager(this@SaleDescription)
-
     }
 
     private fun filterProduct(query: String, listProduct: List<Product>) {

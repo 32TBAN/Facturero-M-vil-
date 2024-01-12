@@ -17,36 +17,48 @@
         app:layout_constraintBottom_toBottomOf="parent"/>
 
     <TextView
-        android:id="@+id/textViewDescriptionSearchProduct"
+        android:id="@+id/textViewIdentification"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Descripcion"
+        android:text="Cedula"
         android:textSize="11sp"
         android:layout_marginStart="10dp"
-        app:layout_constraintStart_toEndOf="@+id/textViewIdSearchProduct"
+        app:layout_constraintStart_toEndOf="@+id/textViewIdOrden"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
     <TextView
-        android:id="@+id/textViewExistSearchProduct"
+        android:id="@+id/textViewName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Existencia"
+        android:text="Nombre"
         android:textSize="11sp"
         android:layout_marginStart="40dp"
-        app:layout_constraintStart_toEndOf="@+id/textViewDescriptionSearchProduct"
+        app:layout_constraintStart_toEndOf="@+id/textViewIdentification"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
     <TextView
-        android:id="@+id/textPriceSearchProduct"
+        android:id="@+id/textViewLastname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Precio"
+        android:text="Apellido"
+        android:textSize="11sp"
+        android:layout_marginStart="36dp"
+        app:layout_constraintStart_toEndOf="@+id/textViewName"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/textViewAdrress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Direccion"
         android:textSize="11sp"
         android:layout_marginStart="36dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textViewExistSearchProduct"/>
+        app:layout_constraintStart_toEndOf="@+id/textViewLastname"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

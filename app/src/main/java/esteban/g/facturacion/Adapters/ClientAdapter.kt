@@ -50,6 +50,4 @@ class ClienteAdapter(private var clientes: List<Customer>, private val listener:
         clientes = customers
         notifyDataSetChanged()
     }
-
-
 }

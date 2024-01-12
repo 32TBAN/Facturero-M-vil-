@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import esteban.g.facturacion.Entidades.Product
 import esteban.g.facturacion.R
 
-class ProductAdapter(private var products: List<Product>, private val listener: OnProductSelectedListener) :
-    RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
+class ProductAdapterAdd(private var products: MutableList<Product>, private val listener: OnProductSelectedListener) :
+    RecyclerView.Adapter<ProductAdapterAdd.ProductViewHolder>() {
 
     class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val id: TextView = itemView.findViewById(R.id.textViewIdSearchProduct)
@@ -44,7 +44,7 @@ class ProductAdapter(private var products: List<Product>, private val listener: 
         return products.size
     }
 
-    fun updateList(productsA: List<Product>) {
+    fun updateList(productsA: MutableList<Product>) {
         products = productsA
         notifyDataSetChanged()
     }
