@@ -3,6 +3,7 @@ package esteban.g.facturacion.Api
 import com.google.gson.annotations.SerializedName
 import esteban.g.facturacion.Entidades.Bill
 import esteban.g.facturacion.Entidades.Customer
+import esteban.g.facturacion.Entidades.Product
 import esteban.g.facturacion.Entidades.User
 import retrofit2.Response
 import retrofit2.http.GET
@@ -14,6 +15,8 @@ interface ApiService {
     suspend fun getBillList(): Response<BillWrapper>
     @GET("ListarClientes")
     suspend fun getCustomerList(): Response<CustomerWrapper>
+    @GET("ListarProductos")
+    suspend fun getProductList(): Response<ProductWapper>
 }
 
 data class UserWrapper(
@@ -29,4 +32,9 @@ data class BillWrapper(
 data class CustomerWrapper(
     @SerializedName("clientes")
     val customer: List<Customer>
+)
+
+data class ProductWapper(
+    @SerializedName("producto")
+    val product: List<Product>
 )
