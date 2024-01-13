@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -98,6 +99,7 @@ ProductAdapterAdd.OnProductSelectedListener{
         val listFilter = listProduct.filter {
             it.name.contains(query, ignoreCase = true)
         }
+        Toast.makeText(this,"a",Toast.LENGTH_SHORT).show()
         productAdapter.updateList(listFilter)
     }
 

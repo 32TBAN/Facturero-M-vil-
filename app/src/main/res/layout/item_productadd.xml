@@ -10,12 +10,10 @@
     <!-- ID del producto -->
     <TextView
         android:id="@+id/textProductIdAdd"
-        android:layout_width="0dp"
+        android:layout_width="26dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:text="ID: "
-        android:textSize="14sp"
-        android:textStyle="bold"/>
+        android:textSize="12sp" />
 
     <!-- Nombre del producto -->
     <TextView
@@ -25,6 +23,16 @@
         android:layout_weight="2"
         android:text="Nombre: "
         android:textSize="14sp"/>
+
+    <TextView
+        android:id="@+id/editTextExistAdd"
+        android:text="Existencia"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:maxLines="1"
+        android:textSize="14sp"
+        android:textStyle="bold"/>
 
     <!-- Cantidad del producto -->
     <EditText
@@ -56,5 +64,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Eliminar"
-        android:textSize="12sp"/>
+        android:textSize="10sp"/>
 </LinearLayout>
