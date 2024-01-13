@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import esteban.g.facturacion.Entidades.Product
 import esteban.g.facturacion.R
 
-class ProductAdapter(private var products: List<Product>, private val listener: OnProductSelectedListener) :
+class ProductAdapter(private var products: MutableList<Product>, private val listener: OnProductSelectedListener) :
     RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
     class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -31,7 +31,7 @@ class ProductAdapter(private var products: List<Product>, private val listener: 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         val customer = products[position]
         holder.id.text = customer.id.toString()
-        holder.description.text = customer.name
+        holder.description.text = customer.name //TODO: areglar como se ven los productos
         holder.exist.text = customer.stock.toString()
         holder.price.text = customer.price.toString()
 
@@ -45,7 +45,7 @@ class ProductAdapter(private var products: List<Product>, private val listener: 
     }
 
     fun updateList(productsA: List<Product>) {
-        products = productsA
+        products = productsA.toMutableList()
         notifyDataSetChanged()
     }
 }

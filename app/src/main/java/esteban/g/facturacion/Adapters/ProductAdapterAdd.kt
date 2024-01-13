@@ -3,6 +3,7 @@ package esteban.g.facturacion.Adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import esteban.g.facturacion.Entidades.Product
@@ -12,31 +13,31 @@ class ProductAdapterAdd(private var products: MutableList<Product>, private val 
     RecyclerView.Adapter<ProductAdapterAdd.ProductViewHolder>() {
 
     class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val id: TextView = itemView.findViewById(R.id.textViewIdSearchProduct)
-        val description: TextView = itemView.findViewById(R.id.textViewDescriptionSearchProduct)
-        val exist: TextView = itemView.findViewById(R.id.textViewExistSearchProduct)
-        val price: TextView = itemView.findViewById(R.id.textPriceSearchProduct)
+        val id: TextView = itemView.findViewById(R.id.textProductIdAdd)
+        val description: TextView = itemView.findViewById(R.id.textProductNameAdd)
+        val exist: TextView = itemView.findViewById(R.id.editTextQuantityAdd)
+        val price: TextView = itemView.findViewById(R.id.textProductPriceAdd)
+        val delete: Button = itemView.findViewById(R.id.buttonDeleteAdd)
     }
 
     interface OnProductSelectedListener {
-        fun onProductSelected(product: Product)
+        fun onProductSelectedAdd(product: Product)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_product, parent, false)
+            .inflate(R.layout.item_productadd, parent, false)
         return ProductViewHolder(itemView)
     }
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-        val customer = products[position]
-        holder.id.text = customer.id.toString()
-        holder.description.text = customer.name
-        holder.exist.text = customer.stock.toString()
-        holder.price.text = customer.price.toString()
-
-        holder.itemView.setOnClickListener {
-            listener.onProductSelected(customer)
+        val product = products[position]
+        holder.id.text = product.id.toString()
+        holder.description.text = product.name
+        holder.exist.text = "1"
+        holder.price.text = product.price.toString()
+        holder.delete.setOnClickListener {
+            listener.onProductSelectedAdd(product)
         }
     }
 

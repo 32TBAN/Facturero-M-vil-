@@ -6,7 +6,7 @@ import esteban.g.facturacion.Entidades.Customer
 import esteban.g.facturacion.Entidades.Product
 
 object ProductLogic {
-    suspend fun getListProduct(): List<Product>? {
+    suspend fun getListProduct(): MutableList<Product>? {
         return ProductApi.getListProduct()
     }
 

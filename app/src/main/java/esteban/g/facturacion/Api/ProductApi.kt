@@ -11,7 +11,7 @@ object ProductApi {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     private val service = retrofit.create(ApiService::class.java)
-    suspend fun getListProduct(): List<Product>? {
+    suspend fun getListProduct(): MutableList<Product>? {
         return try {
             val response = service.getProductList()
             if (response.isSuccessful) {

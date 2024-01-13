@@ -26,7 +26,10 @@ ProductAdapterAdd.OnProductSelectedListener{
     private var editNombre: TextView? = null
     private var textViewAdrress: TextView? = null
     private var dialog:Dialog? = null
+    private var dialogProduct:Dialog? = null
     private var selectedProducts: MutableList<Product> = mutableListOf()
+    private var listProduct: MutableList<Product> = mutableListOf()
+    private var removeListProduct: MutableList<Product> = mutableListOf()
 
     private lateinit var productAdapter: ProductAdapter
     private lateinit var productAdapterAdd: ProductAdapterAdd
@@ -63,25 +66,26 @@ ProductAdapterAdd.OnProductSelectedListener{
 
         }
 
-        btnSearchProduct.setOnClickListener{
-            dialog = Dialog(this@SaleDescription)
-            dialog!!.setContentView(R.layout.dialog_search_products)
-            val editSearchProducts = dialog!!.findViewById<EditText>(R.id.editTextSearchProduct)
+        dialogProduct = Dialog(this@SaleDescription)
+        dialogProduct!!.setContentView(R.layout.dialog_search_products)
+        val editSearchProducts = dialogProduct!!.findViewById<EditText>(R.id.editTextSearchProduct)
 
-            lifecycleScope.launch {
-                val recyclerViewProducts: RecyclerView = dialog!!.findViewById(R.id.recyclerViewProducts)
-                val listProduct: List<Product>? = ProductLogic.getListProduct()
-                if (!listProduct.isNullOrEmpty()) {
-                    productAdapter = ProductAdapter(listProduct, this@SaleDescription)
-                    recyclerViewProducts.adapter = productAdapter
-                    recyclerViewProducts.layoutManager = LinearLayoutManager(dialog!!.context)
-                    dialog!!.show()
+        lifecycleScope.launch {
+            val recyclerViewProducts: RecyclerView = dialogProduct!!.findViewById(R.id.recyclerViewProducts)
+            listProduct = ProductLogic.getListProduct()!!
+            removeListProduct = listProduct
+            if (!listProduct.isNullOrEmpty()) {
+                productAdapter = ProductAdapter(listProduct, this@SaleDescription)
+                recyclerViewProducts.adapter = productAdapter
+                recyclerViewProducts.layoutManager = LinearLayoutManager(dialogProduct!!.context)
 
-                    editSearchProducts.addTextChangedListener {
-                        filterProduct(it.toString(),listProduct)
-                    }
+                editSearchProducts.addTextChangedListener {
+                    filterProduct(it.toString(),listProduct)
                 }
             }
+        }
+        btnSearchProduct.setOnClickListener{
+            dialogProduct!!.show()
         }
 
         val recyclerViewProductsAdd: RecyclerView = findViewById(R.id.recyclerViewProductsAdd)
@@ -90,11 +94,11 @@ ProductAdapterAdd.OnProductSelectedListener{
         recyclerViewProductsAdd.layoutManager = LinearLayoutManager(this@SaleDescription)
     }
 
-    private fun filterProduct(query: String, listProduct: List<Product>) {
+    private fun filterProduct(query: String, listProduct: MutableList<Product>) {
         val listFilter = listProduct.filter {
             it.name.contains(query, ignoreCase = true)
         }
-        productAdapter.updateList(listFilter ?: listProduct)
+        productAdapter.updateList(listFilter)
     }
 
     private fun filterCustomer(query: String, listCustomer: List<Customer>) {
@@ -103,7 +107,7 @@ ProductAdapterAdd.OnProductSelectedListener{
                     it.name.contains(query, ignoreCase = true) ||
                     it.lastname.contains(query, ignoreCase = true)
         }
-        customerAdapter.updateList(listFilter ?: listCustomer)
+        customerAdapter.updateList(listFilter)
     }
 
     override fun onClienteSelected(cliente: Customer) {
@@ -113,10 +117,23 @@ ProductAdapterAdd.OnProductSelectedListener{
         dialog?.dismiss()
     }
 
+    //En este metodo primero se eliminar el producto que se va agregar en la lista de la factura
+    //Posteriormente se agrega a la nueva lista de la factura
     override fun onProductSelected(product: Product) {
+        removeListProduct.remove(product)
+        productAdapter.updateList(removeListProduct)
+
         selectedProducts.add(product)
-        productAdapter.updateList(selectedProducts)
-        dialog?.dismiss()
+        productAdapterAdd.updateList(selectedProducts)
+        dialogProduct?.dismiss()
+    }
+    //Lo contrario del metodo anterior
+    override fun onProductSelectedAdd(product: Product) {
+        selectedProducts.remove(product)
+        productAdapterAdd.updateList(selectedProducts)
+
+        removeListProduct.add(product)
+        productAdapter.updateList(removeListProduct)
     }
 
 }

@@ -36,5 +36,5 @@ data class CustomerWrapper(
 
 data class ProductWapper(
     @SerializedName("producto")
-    val product: List<Product>
+    val product: MutableList<Product>
 )

@@ -1,0 +1,60 @@
+<!-- res/layout/item_productadd.xml -->
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <!-- ID del producto -->
+    <TextView
+        android:id="@+id/textProductIdAdd"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="ID: "
+        android:textSize="14sp"
+        android:textStyle="bold"/>
+
+    <!-- Nombre del producto -->
+    <TextView
+        android:id="@+id/textProductNameAdd"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="Nombre: "
+        android:textSize="14sp"/>
+
+    <!-- Cantidad del producto -->
+    <EditText
+        android:id="@+id/editTextQuantityAdd"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="Cant."
+        android:inputType="number"
+        android:imeOptions="actionDone"
+        android:maxLength="3"
+        android:maxLines="1"
+        android:digits="123456789"
+        android:textSize="14sp"
+        android:textStyle="bold"/>
+
+    <!-- Precio del producto -->
+    <TextView
+        android:id="@+id/textProductPriceAdd"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Precio: $"
+        android:textSize="14sp"/>
+
+    <!-- Botón de eliminar -->
+    <Button
+        android:id="@+id/buttonDeleteAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Eliminar"
+        android:textSize="12sp"/>
+</LinearLayout>
