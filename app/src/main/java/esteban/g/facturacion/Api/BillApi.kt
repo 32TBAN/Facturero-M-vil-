@@ -1,6 +1,7 @@
 package esteban.g.facturacion.Api
 
 import esteban.g.facturacion.Entidades.Bill
+import esteban.g.facturacion.Entidades.Detail
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -63,6 +64,28 @@ object BillApi {
             }else{
                 false
             }
+        } catch (e: Exception) {
+            println(e.message)
+            e.printStackTrace()
+            false
+        }
+    }
+
+    suspend fun addDetails(listDetails: MutableList<Detail>): Boolean {
+        return try {
+            val response = service.addDetails(listDetails)
+            response.isSuccessful
+        } catch (e: Exception) {
+            println(e.message)
+            e.printStackTrace()
+            false
+        }
+    }
+
+    suspend fun deleteBill(id: Int): Boolean {
+        return try {
+            val response = service.deleteBill(id)
+            response.isSuccessful
         } catch (e: Exception) {
             println(e.message)
             e.printStackTrace()

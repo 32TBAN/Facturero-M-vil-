@@ -11,11 +11,13 @@ import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.annotations.SerializedName
 import esteban.g.facturacion.Adapters.ClienteAdapter
 import esteban.g.facturacion.Adapters.ProductAdapter
 import esteban.g.facturacion.Adapters.ProductAdapterAdd
 import esteban.g.facturacion.Entidades.Bill
 import esteban.g.facturacion.Entidades.Customer
+import esteban.g.facturacion.Entidades.Detail
 import esteban.g.facturacion.Entidades.Product
 import esteban.g.facturacion.Logic.BillLogic
 import esteban.g.facturacion.Logic.CustomerLogic
@@ -168,15 +170,40 @@ class SaleDescription : AppCompatActivity(), ClienteAdapter.OnClienteSelectedLis
 
             lifecycleScope.launch {
                 if (BillLogic.addBill(bill)){
-                    Toast.makeText(
-                        this@SaleDescription,
-                        "si",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    val listDetails:MutableList<Detail> = mutableListOf()
+
+                    for (product in selectedProducts){
+                        if (bill != null){
+                            listDetails.add(
+                            Detail(
+                                id = bill!!.id,
+                                idProduct = product.id,
+                                quantity = product.quantiy
+                            ))
+                        }
+                    }
+
+                    if(BillLogic.addDetails(listDetails)){
+                        Toast.makeText(
+                            this@SaleDescription,
+                            "Se ha guardado la factura",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        setResult(RESULT_OK)
+                        finish()
+                    }else{
+                        Toast.makeText(
+                            this@SaleDescription,
+                            "Erro al guardar los productos",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                    //TDO: CERRAR ESTA PANTALL Y ABRIR ACTULIZDO EL FRACMENT
                 }else{
                     Toast.makeText(
                         this@SaleDescription,
-                        "no",
+                        "Error al agregar factura",
                         Toast.LENGTH_SHORT
                     ).show()
                 }

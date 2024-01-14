@@ -6,7 +6,5 @@ data class Detail (
     @SerializedName("iD_Producto")
     val idProduct: Int,
     @SerializedName("cantidad")
-    val quantity: Int,
-    @SerializedName("precio_Total")
-    val price: Float
+    val quantity: Int
 )

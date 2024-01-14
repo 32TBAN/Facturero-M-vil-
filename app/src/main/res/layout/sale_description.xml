@@ -291,7 +291,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="16dp"
-            android:text="SubTotal-12% Des."
+            android:text="SubTotal-12%"
             android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@+id/textArticles"
             app:layout_constraintTop_toBottomOf="@+id/recyclerViewProductsAdd" />

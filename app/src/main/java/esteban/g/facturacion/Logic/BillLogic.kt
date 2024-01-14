@@ -2,6 +2,7 @@ package esteban.g.facturacion.Logic
 
 import esteban.g.facturacion.Api.BillApi
 import esteban.g.facturacion.Entidades.Bill
+import esteban.g.facturacion.Entidades.Detail
 
 object BillLogic {
     suspend fun listaFacturas(): List<Bill>? {
@@ -15,4 +16,13 @@ object BillLogic {
     suspend fun addBill(bill: Bill?): Boolean {
         return BillApi.addBill(bill)
     }
+
+    suspend fun addDetails(listDetails: MutableList<Detail>): Boolean {
+        return BillApi.addDetails(listDetails)
+    }
+
+    suspend fun deleteBill(id: Int): Boolean {
+        return BillApi.deleteBill(id)
+    }
+
 }

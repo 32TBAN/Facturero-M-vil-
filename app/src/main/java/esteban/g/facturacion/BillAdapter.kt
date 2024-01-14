@@ -8,12 +8,16 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import esteban.g.facturacion.Entidades.Bill
 
-class BillAdapter(private val bills: List<Bill>) : RecyclerView.Adapter<BillAdapter.BillViewHolder>() {
+class BillAdapter(private var bills: List<Bill>, private val listener: OnBillSelectedListener) : RecyclerView.Adapter<BillAdapter.BillViewHolder>() {
 
+    interface OnBillSelectedListener {
+        fun onDeleteBillSelected(id: Int)
+        fun showBill(id:Int)
+    }
     class BillViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textViewFactura: TextView = itemView.findViewById(R.id.textViewIdOrden)
         val textViewFecha: TextView = itemView.findViewById(R.id.textViewFecha)
-        val buttonDelete: Button = itemView.findViewById(R.id.buttonDelete) //TODO: Hacer los metodos
+        val buttonDelete: Button = itemView.findViewById(R.id.buttonDelete)
         val btnShow: TextView = itemView.findViewById(R.id.buttonShow)
     }
 
@@ -27,7 +31,17 @@ class BillAdapter(private val bills: List<Bill>) : RecyclerView.Adapter<BillAdap
         val currentBill = bills[position]
         holder.textViewFactura.text = currentBill.id.toString()
         holder.textViewFecha.text = currentBill.date
+        holder.buttonDelete.setOnClickListener {
+            listener.onDeleteBillSelected(currentBill.id)
+        }
+        holder.btnShow.setOnClickListener {
+            listener.showBill(currentBill.id)
+        }
     }
 
     override fun getItemCount() = bills.size
+    fun updateList(listFilter: List<Bill>) {
+        bills = listFilter.toMutableList()
+        notifyDataSetChanged()
+    }
 }
