@@ -10,6 +10,7 @@ data class Product (
     @SerializedName("precio")
     val price: Float,
     @SerializedName("stock")
-    val stock: Int,
-    var quantiy: Int = 1
+    var stock: Int,
+    var quantiy: Int = 1,
+    var originalStock: Int
 )
