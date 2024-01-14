@@ -1,10 +1,7 @@
 package esteban.g.facturacion
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Message
-import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
@@ -13,7 +10,7 @@ import com.google.android.material.navigation.NavigationView
 class salesScreem : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
-    private var userId: Int? = 0
+    private var userId: Int? = 1
     private var userJob: String? = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +18,9 @@ class salesScreem : AppCompatActivity() {
 
         drawerLayout = findViewById(R.id.drawerLayout)
         navigationView = findViewById(R.id.navigationView)
+
+        userId = intent.getIntExtra("userId", 1)
+        userJob = intent.getStringExtra("userJob")
 
         val toggle = ActionBarDrawerToggle(
             this,
@@ -33,15 +33,16 @@ class salesScreem : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        val facturasFragment = FacturasFragment.newInstance(userId)
         supportFragmentManager.beginTransaction()
-            .replace(R.id.container, FacturasFragment())
+            .replace(R.id.container, facturasFragment)
             .commit()
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.menu_facturas -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.container, FacturasFragment())
+                        .replace(R.id.container, facturasFragment)
                         .commit()
                     true
                 }
@@ -63,8 +64,6 @@ class salesScreem : AppCompatActivity() {
             }
         }
 
-        userId = intent.getIntExtra("userId", 0)
-        userJob = intent.getStringExtra("userJob")
 
         showMessangs("Welcome $userId")
     }

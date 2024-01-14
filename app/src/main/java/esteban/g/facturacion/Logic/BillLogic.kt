@@ -11,4 +11,8 @@ object BillLogic {
     suspend fun getNumBill(): Int {
         return BillApi.getNumBill()
     }
+
+    suspend fun addBill(bill: Bill?): Boolean {
+        return BillApi.addBill(bill)
+    }
 }

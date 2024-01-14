@@ -6,7 +6,10 @@ import esteban.g.facturacion.Entidades.Customer
 import esteban.g.facturacion.Entidades.Product
 import esteban.g.facturacion.Entidades.User
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Headers
+import retrofit2.http.POST
 
 interface ApiService {
     @GET("ListarUsuarios")
@@ -17,6 +20,9 @@ interface ApiService {
     suspend fun getCustomerList(): Response<CustomerWrapper>
     @GET("ListarProductos")
     suspend fun getProductList(): Response<ProductWapper>
+    @Headers("Content-Type: application/json;")
+    @POST("Guardar")
+    suspend fun  addBill(@Body bill: Bill): Response<Void>
 }
 
 data class UserWrapper(

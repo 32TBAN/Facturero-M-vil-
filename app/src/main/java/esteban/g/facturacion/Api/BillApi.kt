@@ -54,4 +54,19 @@ object BillApi {
             1
         }
     }
+
+    suspend fun addBill(bill: Bill?): Boolean {
+        return try {
+            if (bill != null){
+                val response = service.addBill(bill)
+                response.isSuccessful
+            }else{
+                false
+            }
+        } catch (e: Exception) {
+            println(e.message)
+            e.printStackTrace()
+            false
+        }
+    }
 }

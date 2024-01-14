@@ -21,15 +21,19 @@ import esteban.g.facturacion.Logic.BillLogic
 import esteban.g.facturacion.Logic.CustomerLogic
 import esteban.g.facturacion.Logic.ProductLogic
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
-class SaleDescription : AppCompatActivity(), ClienteAdapter.OnClienteSelectedListener, ProductAdapter.OnProductSelectedListener,
-ProductAdapterAdd.OnProductSelectedListener{
+class SaleDescription : AppCompatActivity(), ClienteAdapter.OnClienteSelectedListener,
+    ProductAdapter.OnProductSelectedListener,
+    ProductAdapterAdd.OnProductSelectedListener {
     private lateinit var customerAdapter: ClienteAdapter
     private var editCedula: TextView? = null
     private var editNombre: TextView? = null
     private var textViewAdrress: TextView? = null
-    private var dialog:Dialog? = null
-    private var dialogProduct:Dialog? = null
+    private var dialog: Dialog? = null
+    private var dialogProduct: Dialog? = null
     private var selectedProducts: MutableList<Product> = mutableListOf()
     private var listProduct: MutableList<Product> = mutableListOf()
     private var removeListProduct: MutableList<Product> = mutableListOf()
@@ -39,21 +43,17 @@ ProductAdapterAdd.OnProductSelectedListener{
     private var bill: Bill? = Bill(
         id = 0,
         date = "",
-        idCustomer = "id_cliente",
-        idUser = "id_usuario",
-        subtotal = "0.0",
-        total = "0.0"
+        idCustomer = -1,
+        idUser = 1,
+        subtotal = 0.0,
+        total = 0.0
     )
     private var billArticle: TextView? = null
     private var billDiscount: TextView? = null
     private var billIva: TextView? = null
     private var billTotal: TextView? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.sale_description)
-
-        val btnSearchCustomer = findViewById<Button>(R.id.btnBuscarCliente)
+    private fun initTextViewGlobal() {
         editCedula = findViewById(R.id.editCedula)
         editNombre = findViewById(R.id.editNombre)
         textViewAdrress = findViewById(R.id.textViewAdrressSelecd)
@@ -61,8 +61,24 @@ ProductAdapterAdd.OnProductSelectedListener{
         billDiscount = findViewById(R.id.textDiscountEdit)
         billIva = findViewById(R.id.textIvaEdit)
         billTotal = findViewById(R.id.textTotalEdit)
+    }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.sale_description)
+        initTextViewGlobal()
+        val btnSearchCustomer = findViewById<Button>(R.id.btnBuscarCliente)
+        val textViewFecha = findViewById<TextView>(R.id.textFechaActual)
+        val btnAddBill = findViewById<Button>(R.id.btnGuardar)
         val btnSearchProduct = findViewById<Button>(R.id.btnAddProduct)
+        val currentDate = Date()
+        val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+        val formattedDate = dateFormat.format(currentDate)
+        textViewFecha.text = formattedDate
+        bill?.date = textViewFecha.text as String
+
+
+        bill?.idUser = intent.getIntExtra("userId",1)
         //Abrir modal cliente
         btnSearchCustomer.setOnClickListener {
             dialog = Dialog(this@SaleDescription)
@@ -70,7 +86,8 @@ ProductAdapterAdd.OnProductSelectedListener{
             val editSearchCustomer = dialog!!.findViewById<EditText>(R.id.editTextBuscarCliente)
 
             lifecycleScope.launch {
-                val recyclerViewClientes: RecyclerView = dialog!!.findViewById(R.id.recyclerViewClientes)
+                val recyclerViewClientes: RecyclerView =
+                    dialog!!.findViewById(R.id.recyclerViewClientes)
                 val listCustomer: List<Customer>? = CustomerLogic.getListCustomer()
                 if (!listCustomer.isNullOrEmpty()) {
                     customerAdapter = ClienteAdapter(listCustomer, this@SaleDescription)
@@ -79,7 +96,7 @@ ProductAdapterAdd.OnProductSelectedListener{
                     dialog!!.show()
 
                     editSearchCustomer.addTextChangedListener {
-                        filterCustomer(it.toString(),listCustomer)
+                        filterCustomer(it.toString(), listCustomer)
                     }
                 }
             }
@@ -91,7 +108,8 @@ ProductAdapterAdd.OnProductSelectedListener{
         val editSearchProducts = dialogProduct!!.findViewById<EditText>(R.id.editTextSearchProduct)
 
         lifecycleScope.launch {
-            val recyclerViewProducts: RecyclerView = dialogProduct!!.findViewById(R.id.recyclerViewProducts)
+            val recyclerViewProducts: RecyclerView =
+                dialogProduct!!.findViewById(R.id.recyclerViewProducts)
             listProduct = ProductLogic.getListProduct()!!
             removeListProduct = listProduct
             if (listProduct.isNotEmpty()) {
@@ -100,17 +118,21 @@ ProductAdapterAdd.OnProductSelectedListener{
                 recyclerViewProducts.layoutManager = LinearLayoutManager(dialogProduct!!.context)
 
                 editSearchProducts.addTextChangedListener {
-                    filterProduct(it.toString(),listProduct)
+                    filterProduct(it.toString(), listProduct)
                 }
             }
-            bill?.id  = BillLogic.getNumBill()
-            if (bill?.id == 1){
-                Toast.makeText(this@SaleDescription,"Error al obtener num. orden",Toast.LENGTH_SHORT).show()
+            bill?.id = BillLogic.getNumBill()
+            if (bill?.id == 1) {
+                Toast.makeText(
+                    this@SaleDescription,
+                    "Error al obtener num. orden",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
             val billId = findViewById<TextView>(R.id.textCodFacEdit)
             billId.text = bill?.id.toString()
         }
-        btnSearchProduct.setOnClickListener{
+        btnSearchProduct.setOnClickListener {
             dialogProduct!!.show()
         }
 
@@ -118,13 +140,55 @@ ProductAdapterAdd.OnProductSelectedListener{
         productAdapterAdd = ProductAdapterAdd(selectedProducts, this@SaleDescription, ::updateBill)
         recyclerViewProductsAdd.adapter = productAdapterAdd
         recyclerViewProductsAdd.layoutManager = LinearLayoutManager(this@SaleDescription)
+
+        btnAddBill.setOnClickListener {
+            if (selectedProducts.size <= 0) {
+                Toast.makeText(this, "Debe escojer al menos un producto", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            for (product in selectedProducts) {
+                if (product.quantiy <= 0) {
+                    Toast.makeText(
+                        this,
+                        "No ha escogido una cantidad valida para ${product.name}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                }
+            }
+
+            if (bill?.idCustomer == -1 ){
+                Toast.makeText(
+                    this,
+                    "Debe escojer un cliente",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+
+            lifecycleScope.launch {
+                if (BillLogic.addBill(bill)){
+                    Toast.makeText(
+                        this@SaleDescription,
+                        "si",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }else{
+                    Toast.makeText(
+                        this@SaleDescription,
+                        "no",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+        }
     }
 
     private fun filterProduct(query: String, listProduct: MutableList<Product>) {
         val listFilter = listProduct.filter {
             it.name.contains(query, ignoreCase = true)
         }
-        Toast.makeText(this,"a",Toast.LENGTH_SHORT).show()
         productAdapter.updateList(listFilter)
     }
 
@@ -139,8 +203,9 @@ ProductAdapterAdd.OnProductSelectedListener{
 
     override fun onClienteSelected(cliente: Customer) {
         editCedula?.setText(cliente.identification)
-        editNombre?.setText(cliente.name+" "+cliente.lastname)
+        editNombre?.setText(cliente.name + " " + cliente.lastname)
         textViewAdrress?.setText(cliente.address)
+        bill?.idCustomer = cliente.id
         dialog?.dismiss()
     }
 
@@ -156,6 +221,7 @@ ProductAdapterAdd.OnProductSelectedListener{
 
         updateBill()
     }
+
     //Lo contrario del metodo anterior
     override fun onProductSelectedAdd(product: Product) {
         selectedProducts.remove(product)
@@ -175,21 +241,21 @@ ProductAdapterAdd.OnProductSelectedListener{
 
         for (product in selectedProducts) {
             totalArticles += product.quantiy
-            totalDiscount += (product.price * product.quantiy * 0.12)
-            totalIva += (product.price * product.quantiy * 0.12) / 100.0
             totalAmount += (product.price * product.quantiy)
+            totalDiscount += totalAmount - (product.price * product.quantiy * 0.12)
+            totalIva += (product.price * product.quantiy * 0.12)
         }
 
-        var formattedArticle = "0.00"
-        var formattedDiscount = "0.00"
-        var formattedIva = "0.00"
-        var formattedTotal = "0.00"
+        bill?.total = totalAmount
+        bill?.subtotal = totalDiscount
 
-        if (totalArticles != 0 && totalDiscount != 0.0 && totalIva != 0.0 && totalAmount != 0.0) {
-            formattedArticle = String.format("%.2f", totalArticles)
-            formattedDiscount = String.format("%.2f", totalDiscount)
-            formattedIva = String.format("%.2f", totalIva)
-            formattedTotal = String.format("%.2f", totalAmount)
+        var formattedArticle = "0"
+        var formattedDiscount = String.format("%.2f", totalDiscount)
+        var formattedIva = String.format("%.2f", totalIva)
+        var formattedTotal = String.format("%.2f", totalAmount)
+
+        if (totalArticles != 0) {
+            formattedArticle = totalArticles.toString()
         }
 
         billArticle?.text = formattedArticle

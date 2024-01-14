@@ -14,7 +14,18 @@ import esteban.g.facturacion.Logic.BillLogic
 import kotlinx.coroutines.launch
 
 class FacturasFragment : Fragment() {
-
+    companion object {
+        fun newInstance(userId: Int?): FacturasFragment {
+            val fragment = FacturasFragment()
+            val args = Bundle()
+            if (userId != null) {
+                args.putInt("userId", userId)
+            }
+            fragment.arguments = args
+            return fragment
+        }
+    }
+    private var userId: Int? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -27,8 +38,14 @@ class FacturasFragment : Fragment() {
 
         val buttonAddBill = view.findViewById<Button>(R.id.btnAgregarFactura)
 
+        arguments?.let {
+            userId = it.getInt("userId")
+        }
+
         buttonAddBill.setOnClickListener{
-            val intent = Intent(requireContext(), SaleDescription::class.java)
+            val intent = Intent(requireContext(), SaleDescription::class.java).apply {
+                putExtra("userId", userId)
+            }
             startActivity(intent)
         }
 
