@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import esteban.g.facturacion.Entidades.Product
 import esteban.g.facturacion.R
 
-class ProductAdapter(private var products: MutableList<Product>, private val listener: OnProductSelectedListener) :
+class ProductAdapter(private var products: List<Product>, private val listener: OnProductSelectedListener) :
     RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
     class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

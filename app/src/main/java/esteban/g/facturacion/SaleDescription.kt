@@ -11,7 +11,6 @@ import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.annotations.SerializedName
 import esteban.g.facturacion.Adapters.ClienteAdapter
 import esteban.g.facturacion.Adapters.ProductAdapter
 import esteban.g.facturacion.Adapters.ProductAdapterAdd

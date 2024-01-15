@@ -1,0 +1,6 @@
+<resources>
+    <string-array name="job_options">
+        <item>Admin</item>
+        <item>Ninguna</item>
+    </string-array>
+</resources>

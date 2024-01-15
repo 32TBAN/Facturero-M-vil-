@@ -60,13 +60,11 @@ class salesScreem : AppCompatActivity() {
                         .replace(R.id.container, userFragment)
                         .commit()
                     true
-                    true
                 }
                 R.id.menu_productos -> {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.container, productFragment)
                         .commit()
-                    true
                     true
                 }
                 else -> false

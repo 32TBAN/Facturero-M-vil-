@@ -17,8 +17,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="16dp"/>
 
-
-
     <!-- Botón para agregar nuevo usuario -->
     <Button
         android:id="@+id/btnAgregarUsuario"
@@ -37,12 +35,49 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginBottom="16dp"/>
 
+    <LinearLayout
+        android:id="@+id/headerUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/editTextSearchUser"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerViewUsuarios">
+
+        <TextView
+            android:id="@+id/idTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="8dp"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:text="Id"/>
+
+        <TextView
+            android:id="@+id/emailTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="8dp"
+            android:textSize="13sp"
+            android:text="Email"/>
+
+        <TextView
+            android:id="@+id/jobTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="8dp"
+            android:textSize="13sp"
+            android:text="Cargo"/>
+    </LinearLayout>
+
     <!-- RecyclerView para la tabla de usuarios -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewUsuarios"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/btnAgregarUsuario"
+        app:layout_constraintTop_toBottomOf="@id/headerUser"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>

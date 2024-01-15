@@ -3,10 +3,13 @@ package esteban.g.facturacion.Api
 import com.google.gson.annotations.SerializedName
 import esteban.g.facturacion.Entidades.Bill
 import esteban.g.facturacion.Entidades.Customer
+import esteban.g.facturacion.Entidades.CustomerSend
 import esteban.g.facturacion.Entidades.Detail
 import esteban.g.facturacion.Entidades.DetailGet
 import esteban.g.facturacion.Entidades.Product
+import esteban.g.facturacion.Entidades.ProductSend
 import esteban.g.facturacion.Entidades.User
+import esteban.g.facturacion.Entidades.UserSend
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -36,6 +39,17 @@ interface ApiService {
     suspend fun deleteBill(@Query("id") id: Int): Response<Void>
     @GET("ListarDetalleOrden")
     suspend fun getListDetails(@Query("id") id: Int): Response<DetailWapper>
+    @GET("ListarUsuarios")
+    suspend fun getListUser(): Response<UserWrapper>
+    @Headers("Content-Type: application/json;")
+    @POST("AñadirUsuario")
+    suspend fun addUser(@Body userSend: List<UserSend>): Response<Void>
+    @Headers("Content-Type: application/json;")
+    @POST("AñadirCliente")
+    suspend fun addCustomer(@Body listSend: List<CustomerSend>): Response<Void>
+    @Headers("Content-Type: application/json;")
+    @POST("AñadirProducto")
+    suspend fun addProduct(@Body listSend: List<ProductSend>): Response<Void>
 }
 
 data class UserWrapper(
@@ -61,3 +75,5 @@ data class DetailWapper(
     @SerializedName("detalle")
     val detail: List<DetailGet>
 )
+
+

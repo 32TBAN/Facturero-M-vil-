@@ -2,6 +2,8 @@ package esteban.g.facturacion.Api
 
 import esteban.g.facturacion.Entidades.Bill
 import esteban.g.facturacion.Entidades.Customer
+import esteban.g.facturacion.Entidades.CustomerSend
+import esteban.g.facturacion.Entidades.UserSend
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -24,6 +26,23 @@ object CustomerApi {
         } catch (e: Exception) {
             println(e.message)
             null
+        }
+    }
+
+    suspend fun addCustomer(customerSend: CustomerSend?): Boolean {
+        return try {
+            if (customerSend != null){
+                val listSend: MutableList<CustomerSend> = mutableListOf()
+                listSend.add(customerSend)
+                val response = service.addCustomer(listSend)
+                response.isSuccessful
+            }else{
+                false
+            }
+        } catch (e: Exception) {
+            println(e.message)
+            e.printStackTrace()
+            false
         }
     }
 
