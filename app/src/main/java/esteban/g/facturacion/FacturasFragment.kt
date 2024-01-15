@@ -1,4 +1,5 @@
 package esteban.g.facturacion
+
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
@@ -15,9 +16,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import esteban.g.facturacion.Adapters.BillAdapterShow
 import esteban.g.facturacion.Entidades.Bill
 import esteban.g.facturacion.Logic.BillLogic
 import esteban.g.facturacion.Logic.CustomerLogic
+import esteban.g.facturacion.Logic.ProductLogic
 import kotlinx.coroutines.launch
 
 class FacturasFragment : Fragment(), BillAdapter.OnBillSelectedListener {
@@ -32,6 +35,7 @@ class FacturasFragment : Fragment(), BillAdapter.OnBillSelectedListener {
             return fragment
         }
     }
+
     private var userId: Int? = null
     private val ADD_BILL_REQUEST_CODE = 1
     private var listBills: List<Bill>? = null
@@ -52,11 +56,11 @@ class FacturasFragment : Fragment(), BillAdapter.OnBillSelectedListener {
             userId = it.getInt("userId")
         }
 
-        buttonAddBill.setOnClickListener{
+        buttonAddBill.setOnClickListener {
             val intent = Intent(requireContext(), SaleDescription::class.java).apply {
                 putExtra("userId", userId)
             }
-            startActivityForResult(intent,ADD_BILL_REQUEST_CODE)
+            startActivityForResult(intent, ADD_BILL_REQUEST_CODE)
         }
 
         lifecycleScope.launch {
@@ -64,15 +68,15 @@ class FacturasFragment : Fragment(), BillAdapter.OnBillSelectedListener {
 
             if (!listBills.isNullOrEmpty()) {
                 val recyclerView: RecyclerView = view.findViewById(R.id.recyclerViewFacturas)
-                billAdapter = BillAdapter(listBills!!,this@FacturasFragment)
+                billAdapter = BillAdapter(listBills!!, this@FacturasFragment)
                 recyclerView.adapter = billAdapter
                 recyclerView.layoutManager = LinearLayoutManager(requireContext())
             }
         }
 
-        searchBills.addTextChangedListener{query ->
+        searchBills.addTextChangedListener { query ->
             var q = query.toString()
-            if (q != ""){
+            if (q != "") {
                 val listFilter = listBills?.filter {
                     it.id.toString().contains(q, ignoreCase = true) ||
                             it.date.contains(q, ignoreCase = true)
@@ -91,7 +95,7 @@ class FacturasFragment : Fragment(), BillAdapter.OnBillSelectedListener {
 
                 if (!listBills.isNullOrEmpty()) {
                     val recyclerView: RecyclerView = view?.findViewById(R.id.recyclerViewFacturas)!!
-                    val billAdapter = BillAdapter(listBills,this@FacturasFragment)
+                    val billAdapter = BillAdapter(listBills, this@FacturasFragment)
                     recyclerView.adapter = billAdapter
                     recyclerView.layoutManager = LinearLayoutManager(requireContext())
                 }
@@ -101,7 +105,7 @@ class FacturasFragment : Fragment(), BillAdapter.OnBillSelectedListener {
 
     override fun onDeleteBillSelected(id: Int) {
         lifecycleScope.launch {
-            if (BillLogic.deleteBill(id)){
+            if (BillLogic.deleteBill(id)) {
 
                 Toast.makeText(
                     requireContext(),
@@ -113,7 +117,7 @@ class FacturasFragment : Fragment(), BillAdapter.OnBillSelectedListener {
                 }
 
                 listBills?.let { billAdapter.updateList(it) }
-            }else{
+            } else {
                 Toast.makeText(
                     requireContext(),
                     "Error al eliminar",
@@ -124,6 +128,9 @@ class FacturasFragment : Fragment(), BillAdapter.OnBillSelectedListener {
     }
 
     override fun showBill(id: Int) {
+        lifecycleScope.launch {
+            listBills = BillLogic.listaFacturas()
+        }
         val selectedBill = listBills?.find { it.id == id }
 
         if (selectedBill != null) {
@@ -144,17 +151,35 @@ class FacturasFragment : Fragment(), BillAdapter.OnBillSelectedListener {
             titleTextView.text = "Factura #${selectedBill.id}"
             fechaTextView.text = "Fecha: ${selectedBill.date}"
             lifecycleScope.launch {
-                for (customer in CustomerLogic.getListCustomer()!!){
-                    if (customer.id == selectedBill.idCustomer){
+                for (customer in CustomerLogic.getListCustomer()!!) {
+                    if (customer.id == selectedBill.idCustomer) {
                         clienteTextView.text = "Cliente: ${customer.name} ${customer.lastname}"
                         break
                     }
                 }
+                var total =0.0
+                val listDetails = BillLogic.getListDetails(selectedBill.id)
+                val lisProduct = ProductLogic.getListProduct()
+                for (details in listDetails!!) {
+                    total += details.price
+                    for (product in lisProduct!!) {
+                        if (details.idProduct == product.id) {
+                            details.name = product.name
+                            details.price = product.price
+                            break
+                        }
+                    }
+                }
+                val recyclerViewDetails: RecyclerView =
+                    modalView.findViewById(R.id.recyclerViewProductsShow)
+                val adapter = BillAdapterShow(listDetails)
+                recyclerViewDetails.adapter = adapter
+                recyclerViewDetails.layoutManager = LinearLayoutManager(requireContext())
+                subtotalTextView.text = (selectedBill.subtotal*0.88).toString()
+                totalTextView.text = String.format("%.2f",total)
             }
-            subtotalTextView.text = selectedBill.subtotal.toString()
-            totalTextView.text = selectedBill.total.toString()
 
-            val closeButton = modalView.findViewById<Button>(R.id.btnCloseModal)
+            val closeButton = modalView.findViewById<View>(R.id.btnCloseModal)
             closeButton.setOnClickListener {
                 alertDialog.dismiss()
             }

@@ -37,6 +37,9 @@ class salesScreem : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.container, facturasFragment)
             .commit()
+        val customerFragment = CustomerFragment.newInstance(userId)
+        val userFragment = UserFragment.newInstance(userId)
+        val productFragment = ProductFragment.newInstance(userId)
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
@@ -47,17 +50,23 @@ class salesScreem : AppCompatActivity() {
                     true
                 }
                 R.id.menu_clientes -> {
-                    true
-
-                }
-                R.id.menu_usuarios -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.container, UsuariosFragment())
+                        .replace(R.id.container, customerFragment)
                         .commit()
                     true
                 }
+                R.id.menu_usuarios -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.container, userFragment)
+                        .commit()
+                    true
+                    true
+                }
                 R.id.menu_productos -> {
-
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.container, productFragment)
+                        .commit()
+                    true
                     true
                 }
                 else -> false

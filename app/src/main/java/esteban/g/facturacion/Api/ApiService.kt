@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName
 import esteban.g.facturacion.Entidades.Bill
 import esteban.g.facturacion.Entidades.Customer
 import esteban.g.facturacion.Entidades.Detail
+import esteban.g.facturacion.Entidades.DetailGet
 import esteban.g.facturacion.Entidades.Product
 import esteban.g.facturacion.Entidades.User
 import retrofit2.Response
@@ -33,6 +34,8 @@ interface ApiService {
     suspend fun addDetails(@Body listDetails: List<Detail>): Response<Void>
     @DELETE("EliminarOrdenVenta")
     suspend fun deleteBill(@Query("id") id: Int): Response<Void>
+    @GET("ListarDetalleOrden")
+    suspend fun getListDetails(@Query("id") id: Int): Response<DetailWapper>
 }
 
 data class UserWrapper(
@@ -53,4 +56,8 @@ data class CustomerWrapper(
 data class ProductWapper(
     @SerializedName("producto")
     val product: MutableList<Product>
+)
+data class DetailWapper(
+    @SerializedName("detalle")
+    val detail: List<DetailGet>
 )

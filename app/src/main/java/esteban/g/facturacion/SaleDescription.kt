@@ -273,13 +273,13 @@ class SaleDescription : AppCompatActivity(), ClienteAdapter.OnClienteSelectedLis
             totalIva += (product.price * product.quantiy * 0.12)
         }
 
-        bill?.total = totalAmount
-        bill?.subtotal = totalDiscount
+        bill?.total = totalDiscount - (totalDiscount * 0.88)
+        bill?.subtotal = totalDiscount - (totalDiscount * 0.88)
 
         var formattedArticle = "0"
-        var formattedDiscount = String.format("%.2f", totalDiscount)
-        var formattedIva = String.format("%.2f", totalIva)
-        var formattedTotal = String.format("%.2f", totalAmount)
+        val formattedDiscount = String.format("%.2f", totalDiscount)
+        val formattedIva = String.format("%.2f", totalIva)
+        val formattedTotal = String.format("%.2f", totalAmount)
 
         if (totalArticles != 0) {
             formattedArticle = totalArticles.toString()

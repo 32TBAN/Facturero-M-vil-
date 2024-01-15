@@ -2,6 +2,7 @@ package esteban.g.facturacion.Api
 
 import esteban.g.facturacion.Entidades.Bill
 import esteban.g.facturacion.Entidades.Detail
+import esteban.g.facturacion.Entidades.DetailGet
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -91,5 +92,22 @@ object BillApi {
             e.printStackTrace()
             false
         }
+    }
+
+    suspend fun getListDetails(id: Int): List<DetailGet>? {
+        return try {
+            val response = service.getListDetails(id)
+            if (response.isSuccessful) {
+                val detailWrapper = response.body()
+                detailWrapper?.detail
+            } else {
+                emptyList()
+            }
+        } catch (e: Exception) {
+            println(e.message)
+            e.printStackTrace()
+            emptyList()
+        }
+
     }
 }
