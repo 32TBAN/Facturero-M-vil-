@@ -21,15 +21,17 @@ import kotlinx.coroutines.launch
 
 class ProductFragment : Fragment(), ProductAdapter.OnProductSelectedListener {
     private var userId: Int? = null
+    private var userJob: String? = null
     private lateinit var productAdapter: ProductAdapter
     private var listProducts: List<Product>? = null
 
     companion object {
-        fun newInstance(userId: Int?): ProductFragment {
+        fun newInstance(userId: Int?, userJob: String?): ProductFragment {
             val fragment = ProductFragment()
             val args = Bundle()
             if (userId != null) {
                 args.putInt("userId", userId)
+                args.putString("userJob",userJob)
             }
             fragment.arguments = args
             return fragment
@@ -47,9 +49,11 @@ class ProductFragment : Fragment(), ProductAdapter.OnProductSelectedListener {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
             userId = it.getInt("userId")
+            userJob = it.getString("userJob")
         }
         val btnAddProduct = view.findViewById<Button>(R.id.btnAgregarProduct)
         val searchProduct = view.findViewById<EditText>(R.id.editTextSearchProduct)
+        btnAddProduct.visibility = if (userJob.equals("Ninguno", ignoreCase = true)) View.GONE else View.VISIBLE
 
         lifecycleScope.launch {
             listProducts = ProductLogic.getListProduct()

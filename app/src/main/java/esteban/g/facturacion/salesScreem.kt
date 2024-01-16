@@ -33,13 +33,13 @@ class salesScreem : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val facturasFragment = FacturasFragment.newInstance(userId)
+        val facturasFragment = FacturasFragment.newInstance(userId,userJob)
         supportFragmentManager.beginTransaction()
             .replace(R.id.container, facturasFragment)
             .commit()
-        val customerFragment = CustomerFragment.newInstance(userId)
-        val userFragment = UserFragment.newInstance(userId)
-        val productFragment = ProductFragment.newInstance(userId)
+        val customerFragment = CustomerFragment.newInstance(userId,userJob)
+        val userFragment = UserFragment.newInstance(userId,userJob)
+        val productFragment = ProductFragment.newInstance(userId,userJob)
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {

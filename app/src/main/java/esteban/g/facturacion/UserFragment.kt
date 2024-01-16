@@ -17,21 +17,22 @@ import androidx.recyclerview.widget.RecyclerView
 import esteban.g.facturacion.Adapters.UserAdapter
 import esteban.g.facturacion.Entidades.User
 import esteban.g.facturacion.Entidades.UserSend
-import esteban.g.facturacion.Logic.BillLogic
 import esteban.g.facturacion.Logic.UserLogic
 import kotlinx.coroutines.launch
 
 class UserFragment : Fragment() {
     private var userId: Int? = null
+    private var userJob: String? = null
     private lateinit var userAdapter: UserAdapter
     private var listUsers: List<User>? = null
 
     companion object {
-        fun newInstance(userId: Int?): UserFragment {
+        fun newInstance(userId: Int?, userJob: String?): UserFragment {
             val fragment = UserFragment()
             val args = Bundle()
             if (userId != null) {
                 args.putInt("userId", userId)
+                args.putString("userJob",userJob)
             }
             fragment.arguments = args
             return fragment
@@ -49,9 +50,11 @@ class UserFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
             userId = it.getInt("userId")
+            userJob = it.getString("userJob")
         }
         val btnAddUser = view.findViewById<Button>(R.id.btnAgregarUsuario)
         val searchUser = view.findViewById<EditText>(R.id.editTextSearchUser)
+        btnAddUser.visibility = if (userJob.equals("Ninguno", ignoreCase = true)) View.GONE else View.VISIBLE
 
         lifecycleScope.launch {
             listUsers = UserLogic.getListUser()
@@ -101,6 +104,9 @@ class UserFragment : Fragment() {
 
                 if (!email.isNotEmpty() && !job.isNotEmpty() && !password.isNotEmpty()) {
                     showToast("Error debe completar todos los campos")
+                } else if (!isPasswordValid(password)) {
+                    showToast("La contraseña no cumple con los requisitos mínimos")
+                    showToast("Debe tener: Una letra masyus. una minus. un número y un caracter")
                 } else {
                     val userSend = UserSend(
                         email = email,
@@ -124,8 +130,10 @@ class UserFragment : Fragment() {
 
         }
     }
-
-
+    private fun isPasswordValid(password: String): Boolean {
+        val passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\da-zA-Z]).{4,}$"
+        return password.matches(passwordRegex.toRegex())
+    }
     private fun showToast(s: String) {
         Toast.makeText(requireContext(), s, Toast.LENGTH_SHORT).show()
     }

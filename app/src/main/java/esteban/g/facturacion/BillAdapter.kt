@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import esteban.g.facturacion.Entidades.Bill
 
-class BillAdapter(private var bills: List<Bill>, private val listener: OnBillSelectedListener) : RecyclerView.Adapter<BillAdapter.BillViewHolder>() {
+class BillAdapter(private var bills: List<Bill>, private val listener: OnBillSelectedListener, private val userJob: String) : RecyclerView.Adapter<BillAdapter.BillViewHolder>() {
 
     interface OnBillSelectedListener {
         fun onDeleteBillSelected(id: Int)
@@ -37,6 +37,7 @@ class BillAdapter(private var bills: List<Bill>, private val listener: OnBillSel
         holder.btnShow.setOnClickListener {
             listener.showBill(currentBill.id)
         }
+        holder.buttonDelete.visibility = if (userJob.equals("Ninguno", ignoreCase = true)) View.GONE else View.VISIBLE
     }
 
     override fun getItemCount() = bills.size

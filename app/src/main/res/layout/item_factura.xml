@@ -1,6 +1,5 @@
 <!-- res/layout/item_factura.xml -->
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -34,17 +33,26 @@
         android:id="@+id/buttonDelete"
         android:layout_width="88dp"
         android:layout_height="wrap_content"
-        android:text="Eliminar"
+        android:backgroundTint="#FF0000"
         android:textSize="10dp"
+        android:radius="12dp"
+        android:stateListAnimator="@null"
+        android:text="Eliminar"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toStartOf="@+id/buttonShow"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/buttonShow"
         android:layout_width="64dp"
-        android:layout_height="wrap_content"
-        android:text="Ver"
         android:textSize="10dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#4CAF50"
+        android:radius="12dp"
+        android:stateListAnimator="@null"
+        android:text="Ver"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,12 +24,14 @@ import esteban.g.facturacion.Logic.ProductLogic
 import kotlinx.coroutines.launch
 
 class FacturasFragment : Fragment(), BillAdapter.OnBillSelectedListener {
+    private var userJob: String? = null
     companion object {
-        fun newInstance(userId: Int?): FacturasFragment {
+        fun newInstance(userId: Int?, userJob: String?): FacturasFragment {
             val fragment = FacturasFragment()
             val args = Bundle()
             if (userId != null) {
                 args.putInt("userId", userId)
+                args.putString("userJob",userJob)
             }
             fragment.arguments = args
             return fragment
@@ -54,6 +56,7 @@ class FacturasFragment : Fragment(), BillAdapter.OnBillSelectedListener {
 
         arguments?.let {
             userId = it.getInt("userId")
+            userJob = it.getString("userJob")
         }
 
         buttonAddBill.setOnClickListener {
@@ -68,7 +71,7 @@ class FacturasFragment : Fragment(), BillAdapter.OnBillSelectedListener {
 
             if (!listBills.isNullOrEmpty()) {
                 val recyclerView: RecyclerView = view.findViewById(R.id.recyclerViewFacturas)
-                billAdapter = BillAdapter(listBills!!, this@FacturasFragment)
+                billAdapter = BillAdapter(listBills!!, this@FacturasFragment,userJob!!)
                 recyclerView.adapter = billAdapter
                 recyclerView.layoutManager = LinearLayoutManager(requireContext())
             }
@@ -95,7 +98,7 @@ class FacturasFragment : Fragment(), BillAdapter.OnBillSelectedListener {
 
                 if (!listBills.isNullOrEmpty()) {
                     val recyclerView: RecyclerView = view?.findViewById(R.id.recyclerViewFacturas)!!
-                    val billAdapter = BillAdapter(listBills, this@FacturasFragment)
+                    val billAdapter = BillAdapter(listBills, this@FacturasFragment, userJob!!)
                     recyclerView.adapter = billAdapter
                     recyclerView.layoutManager = LinearLayoutManager(requireContext())
                 }

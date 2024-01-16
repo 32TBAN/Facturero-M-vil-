@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Spinner
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -22,15 +21,17 @@ import kotlinx.coroutines.launch
 
 class CustomerFragment : Fragment(), ClienteAdapter.OnClienteSelectedListener {
     private var userId: Int? = null
+    private var userJob: String? = null
     private lateinit var customerAdapter: ClienteAdapter
     private var listCustomers: List<Customer>? = null
 
     companion object {
-        fun newInstance(userId: Int?): CustomerFragment {
+        fun newInstance(userId: Int?, userJob: String?): CustomerFragment {
             val fragment = CustomerFragment()
             val args = Bundle()
             if (userId != null) {
                 args.putInt("userId", userId)
+                args.putString("userJob",userJob)
             }
             fragment.arguments = args
             return fragment
@@ -48,9 +49,11 @@ class CustomerFragment : Fragment(), ClienteAdapter.OnClienteSelectedListener {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
             userId = it.getInt("userId")
+            userJob = it.getString("userJob")
         }
         val btnAddCustomer = view.findViewById<Button>(R.id.btnAgregarCustomer)
         val searchCustomer = view.findViewById<EditText>(R.id.editTextSearchCustomer)
+        btnAddCustomer.visibility = if (userJob.equals("Ninguno", ignoreCase = true)) View.GONE else View.VISIBLE
 
         lifecycleScope.launch {
             listCustomers = CustomerLogic.getListCustomer()
